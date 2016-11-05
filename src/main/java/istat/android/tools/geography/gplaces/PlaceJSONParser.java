@@ -4,15 +4,9 @@ import istat.android.tools.geography.gplaces.GooglePlaces.GooglePlaceException;
 import istat.android.tools.geography.gplaces.Place.Geometry;
 import istat.android.tools.geography.gplaces.Place.Location;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
- 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.Log;
 /*
  * Copyright (C) 2014 Istat Dev.
  *

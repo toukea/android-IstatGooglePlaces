@@ -32,7 +32,7 @@ import istat.android.network.http.SimpleHttpQuery;
 /**
  * @author Toukea Tatsi (Istat)
  */
-public class GooglePlaces {
+class GooglePlaces {
     public static final String PLACES_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/search/json";
     public static final String PLACES_TEXT_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/search/json";
     public static final String PLACES_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json";
@@ -110,13 +110,13 @@ public class GooglePlaces {
         http.setConnectionTimeOut(time);
     }
 
-    private void preparPlaceQuery() {
+    private void preparePlaceQuery() {
         http.addParam(PLACE_KEY, key);
         http.addParam(PLACE_SENSOR, "false");
     }
 
     private void addFilterParams(PlaceFilter filter) {
-        preparPlaceQuery();
+        preparePlaceQuery();
         if (filter.keyword != null)
             http.addParam(PlaceFilter.PLACE_KEYWORD, filter.keyword);
         if (filter.maxprice != null)
