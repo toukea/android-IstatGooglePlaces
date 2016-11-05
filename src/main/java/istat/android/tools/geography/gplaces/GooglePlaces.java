@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import istat.android.network.http.HttpAsyncQuery;
 import istat.android.network.util.ToolKits;
 import istat.android.network.http.SimpleHttpQuery;
 
@@ -50,18 +51,27 @@ class GooglePlaces {
         this.key = key;
     }
 
-    public PlaceList search(PlaceFilter filter) throws URISyntaxException, IOException, JSONException, GooglePlaceException {
+    public void search(final PlaceFilter filter) {
         http.clearExtraData();
         addFilterParams(filter);
-        JSONObject jObject = new JSONObject(
-                ToolKits.Stream.streamToString(
-                        http.doGet(PLACES_SEARCH_URL))
-        );
-        Log.d("JsonResult", http.getURL(PLACES_SEARCH_URL));
-        PlaceList placesList = new PlaceJSONParser().parse(jObject);
-        lastPageToken = placesList.getPagetoken();
-        lastPlaceFilter = filter;
-        return placesList;
+        HttpAsyncQuery.from(http)
+                .doGet(new HttpAsyncQuery.HttpQueryCallBack() {
+                    @Override
+                    public void onHttRequestComplete(HttpAsyncQuery.HttpQueryResponse httpQueryResponse) {
+                        try {
+                            JSONObject jObject = new JSONObject(
+                                    ToolKits.Stream.streamToString(
+                                            http.doGet(PLACES_SEARCH_URL))
+                            );
+                            Log.d("JsonResult", http.getURL(PLACES_SEARCH_URL));
+                            PlaceList placesList = new PlaceJSONParser().parse(jObject);
+                            lastPageToken = placesList.getPagetoken();
+                            lastPlaceFilter = filter;
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }, PLACES_SEARCH_URL);
     }
 
     public PlaceList nextPageSearch() throws URISyntaxException, IOException, JSONException, GooglePlaceException {
