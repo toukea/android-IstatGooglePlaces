@@ -31,8 +31,8 @@ class PlaceJSONParser {
  
     /** Receives a JSONObject and returns a list 
      * @throws Exception */
-	 PlacesList placesList=new PlacesList();;
-    public  PlacesList parse(JSONObject jObject) throws GooglePlaceException{
+	 PlaceList placesList=new PlaceList();;
+    public PlaceList parse(JSONObject jObject) throws GooglePlaceException{
  
         JSONArray jPlaces = null;
         try {
@@ -50,7 +50,7 @@ class PlaceJSONParser {
         return getPlacesList(jPlaces);
     }
  
-    private  PlacesList getPlacesList(JSONArray jPlaces){
+    private PlaceList getPlacesList(JSONArray jPlaces){
         int placesCount = jPlaces.length();
         
        // List<Place> placesList = new ArrayList<Place>();

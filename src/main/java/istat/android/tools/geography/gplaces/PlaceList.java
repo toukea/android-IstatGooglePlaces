@@ -3,7 +3,7 @@ package istat.android.tools.geography.gplaces;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlacesList {
+public class PlaceList {
 List<Place> places=new ArrayList<Place>();
 String next_place_token;
 public boolean hasNextPage(){

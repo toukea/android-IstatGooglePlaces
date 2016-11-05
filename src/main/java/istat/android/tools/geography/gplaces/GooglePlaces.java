@@ -50,7 +50,7 @@ class GooglePlaces {
         this.key = key;
     }
 
-    public PlacesList search(PlaceFilter filter) throws URISyntaxException, IOException, JSONException, GooglePlaceException {
+    public PlaceList search(PlaceFilter filter) throws URISyntaxException, IOException, JSONException, GooglePlaceException {
         http.clearExtraData();
         addFilterParams(filter);
         JSONObject jObject = new JSONObject(
@@ -58,14 +58,13 @@ class GooglePlaces {
                         http.doGet(PLACES_SEARCH_URL))
         );
         Log.d("JsonResult", http.getURL(PLACES_SEARCH_URL));
-        PlacesList placesList = new PlaceJSONParser().parse(jObject);
-        ;
+        PlaceList placesList = new PlaceJSONParser().parse(jObject);
         lastPageToken = placesList.getPagetoken();
         lastPlaceFilter = filter;
         return placesList;
     }
 
-    public PlacesList nextPageSearch() throws URISyntaxException, IOException, JSONException, GooglePlaceException {
+    public PlaceList nextPageSearch() throws URISyntaxException, IOException, JSONException, GooglePlaceException {
         //addFilterParams(lastPlaceFilter);
         http.addParam(PlaceFilter.PLACE_PAGE_TOKEN, lastPageToken);
         JSONObject jObject = new JSONObject(
@@ -74,23 +73,12 @@ class GooglePlaces {
         );
         http.removeParam(PlaceFilter.PLACE_PAGE_TOKEN);
         Log.d("JsonResult", http.getURL(PLACES_SEARCH_URL));
-        PlacesList placesList = new PlaceJSONParser().parse(jObject);
-        ;
+        PlaceList placesList = new PlaceJSONParser().parse(jObject);
         lastPageToken = placesList.getPagetoken();
         return placesList;
     }
 
-    /*public PlacesList getPlaceDetails(String reference) throws ClientProtocolException, URISyntaxException, IOException, JSONException, GooglePlaceException{
-        http.addParam("reference",reference);
-        JSONObject jObject=new JSONObject(
-                ToolKits.Stream.streamToString(
-                http.doGet(PLACES_DETAILS_URL))
-
-                );
-        Log.d("JsonResult", http.getURL(PLACES_DETAILS_URL));
-        return new PlaceJSONParser().parse(jObject);
-    }*/
-    public PlacesList getPlaceDetails(String place_id) throws URISyntaxException, IOException, JSONException, GooglePlaceException {
+    public PlaceList getPlaceDetails(String place_id) throws URISyntaxException, IOException, JSONException, GooglePlaceException {
         http.clearExtraData();
         http.addParam("placeid", place_id);
         JSONObject jObject = new JSONObject(
@@ -179,6 +167,22 @@ class GooglePlaces {
             super(message, throwable);
         }
 
+    }
+
+    public static interface PlaceListCallback {
+        public void onSuccess(PlaceList list);
+
+        public void onError(GooglePlaceException e);
+
+        public void onFail(Exception e);
+    }
+
+    public static interface PlaceDetailCallback {
+        public void onSuccess(Place list);
+
+        public void onError(GooglePlaceException e);
+
+        public void onFail(Exception e);
     }
 
 	/*	
